@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        map<int, int> m;
+        for (int i = 0; i < intervals.size(); i++){
+            m[intervals[i].front()]++;
+            m[intervals[i].back()]--;
+        }
+        
+        int rooms = 0, max_room = 0;
+        for (auto k: m){
+            rooms += k.second;
+            max_room = max(rooms, max_room);
+        }
+        return max_room;
+    }
+};
