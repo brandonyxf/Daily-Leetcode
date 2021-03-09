@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool canAttendMeetings(vector<vector<int>>& intervals) {
+        if (intervals.empty()){
+            return true;
+        }
+        
+        map<int, int> m;
+        for (auto l: intervals){
+            if (m.count(l[1]) > 0){
+                return false;
+            } else {
+                m[l[1]] = l[0];
+            }
+        }
+        auto prev = m.begin();
+        for (auto k = next(m.begin()); k != m.end(); k++){
+            if (k->second < prev->first){
+                return false;
+            } else {
+                prev = k;
+            }
+        }
+        return true;
+    }
+};
