@@ -1,0 +1,55 @@
+class Solution {
+public:
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        
+        if (firstList.empty() || secondList.empty()){
+            return {};
+        }
+        
+        int l = 0, r = 0;
+        int l_end = firstList.size();
+        int r_end = secondList.size();
+        vector<vector<int>> ans;
+        
+        while (l < l_end and r < r_end){
+            if (firstList[l][0] <= secondList[r][1] && secondList[r][0] <= firstList[l][1]){
+                ans.push_back({max(firstList[l][0], secondList[r][0]), min(firstList[l][1], secondList[r][1])});
+            }
+            if (secondList[r][1] >= firstList[l][1]){
+                    l++;
+                } else {
+                    r++;
+                }
+        }
+        return ans;
+    }
+};
+
+//         map<int, int> m;
+//         for (auto k: firstList){
+//             m[k[0]]++;
+//             m[k[1]]--;
+//         }
+//         for (auto k:secondList){
+//             m[k[0]]++;
+//             m[k[1]]--;
+//         }
+        
+//         vector<int> cur_list = {0, 0};
+//         int val = 0;
+//         vector<vector<int>> ans;
+        
+//         for(auto l:m){
+//             if (val == 2 && l.second < 0){
+//                 cur_list[1] = l.first;
+//                 ans.push_back(cur_list);
+//             }            
+//             val += l.second;
+//             if (val == 2 && l.second > 0) cur_list[0] = l.first;
+
+//             if (l.second == 0){
+//                 ans.push_back({l.first, l.first});
+//             }
+//         }
+        
+//         return ans;
