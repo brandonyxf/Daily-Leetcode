@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<vector<int>> removeInterval(vector<vector<int>>& intervals, vector<int>& tBR) {
+        vector<vector<int>> res;
+        for (int i = 0; i < intervals.size(); i++){
+            if (intervals[i][1] <= tBR[0] || tBR [1] <= intervals[i][0]) {
+                res.push_back(intervals[i]);
+            } else if (tBR[0] > intervals[i][0] && tBR[1] < intervals[i][1]) {
+                res.push_back({intervals[i][0], tBR[0]});
+                res.push_back({tBR[1], intervals[i][1]});
+            } else if (tBR[0] > intervals[i][0] && tBR[0] < intervals[i][1]){
+                res.push_back({intervals[i][0], tBR[0]});
+            } else if (tBR[1] < intervals[i][1] && tBR[1] > intervals[i][0]){
+                res.push_back({tBR[1], intervals[i][1]});
+            }
+        }
+        return res;
+    }
+};
