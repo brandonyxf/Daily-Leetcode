@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        if (intervals.empty()){
+            return {newInterval};
+        }
+        map<int, int> m;
+        
+        for (auto t: intervals){
+            m[t[0]]++;
+            m[t[1]]--;
+        }
+        m[newInterval[0]]++;
+        m[newInterval[1]]--;
+        
+        int curr = 0;
+        vector<int> vec = {0, 0};
+        vector<vector<int>> ans;
+        for (auto k: m){
+            if (curr == 0) vec[0]  = k.first;
+            curr += k.second;
+            if (curr == 0) {
+                vec[1] = k.first;
+                ans.push_back(vec);
+            }
+        }
+        
+        return ans;
+    }
+};
