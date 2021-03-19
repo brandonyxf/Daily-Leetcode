@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int rectangleArea(vector<vector<int>>& rectangles) {
+        map<int, int> mx, my;
+        for (auto v: rectangles){
+            mx.insert({v[0], 0});
+            mx.insert({v[2], 0});
+            my.insert({v[1], 0});
+            my.insert({v[3], 0});
+        }
+
+        
+        for (auto i = mx.begin(); i != mx.end(); i++) i->second = distance(mx.begin(), i);
+        for (auto i = my.begin(); i != my.end(); i++) i->second = distance(my.begin(), i);
+
+        vector<vector<bool>> m(mx.size(), vector<bool>(my.size(), false));
+        int res = 0;
+        
+        for (auto v: rectangles){
+            for (auto i = mx.find(v[0]); i->first != v[2]; i++){
+                for (auto j = my.find(v[1]); j->first != v[3]; j++){
+                    if (i->second == 9 && j->second == 4){
+                        int asd = 0;
+                    }
+                    if (m[i->second][j->second] == false){
+                        m[i->second][j->second] = true;
+                        res = (res + ((long long)i->first - next(i)->first)*(j->first - next(j)->first)) % 1000000007;
+                        if (res < 0){
+                            int asd = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return res % 1000000007;
+    
+    }
+};
