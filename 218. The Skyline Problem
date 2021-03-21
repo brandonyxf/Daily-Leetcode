@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+        // line sweep
+        // 1 open
+        // 2 close
+        vector<vector<int>> events;
+        for (auto b: buildings){
+            events.push_back({b[0], 1, b[2]});
+            events.push_back({b[1], 0, b[2]});
+        }
+        sort(events.begin(), events.end(), [](vector<int>& a, vector<int>& b){if (a[0] == b[0]){return a[1] > b[1];} else {return a[0] < b[0];}}); 
+        
+        multiset<int> active;
+        vector<vector<int>> res;
+        int max_h = 0;
+        
+        vector<int> prev = {};
+        for (int i = 0; i < events.size(); i++){
+            if (events[i][1] == 1){
+                active.insert(events[i][2]);
+            } else {
+                active.erase(active.lower_bound(events[i][2]));
+            }
+            
+            while (i != events.size()-1 && events[i+1][0] == events[i][0] && events[i+1][1] == events[i][1]){
+                i++;
+                if (events[i][1] == 1){
+                    active.insert(events[i][2]);
+                } else {
+                    active.erase(active.lower_bound(events[i][2]));
+                }
+            }            
+        
+            if (active.empty()){
+                res.push_back({events[i][0], 0});
+                max_h = 0;
+            } else {
+                if (max_h == *active.rbegin()){
+                    continue;
+                } else {
+                    max_h = *active.rbegin();
+                    res.push_back({events[i][0], max_h});
+                }
+            }
+        }
+        return res;
+        
+    }
+};
