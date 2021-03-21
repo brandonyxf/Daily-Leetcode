@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool isRectangleCover(vector<vector<int>>& rectangles) {
+        map<pair<int, int>, int> m;
+        int s_x = INT_MAX, s_y = INT_MAX, l_y = -1, l_x = -1;
+        int area = 0;
+        
+        for (vector<int> ind: rectangles){
+            s_x = min(s_x, ind[0]);
+            s_y = min(s_y, ind[1]);
+            l_x = max(l_x, ind[2]);
+            l_y = max(l_y, ind[3]);
+
+            m[{ind[0], ind[1]}]++;
+            m[{ind[2], ind[3]}]++;
+            m[{ind[0], ind[3]}]++;
+            m[{ind[2], ind[1]}]++;            
+            area += (ind[2] - ind[0])*(ind[3] - ind[1]);
+        }
+        
+        int count_corner = 0;
+        for (auto k:m){
+            if (k.second%2 == 1) count_corner++;
+        }
+        if (count_corner != 4) return false;
+        
+        
+        if (m[{s_x, s_y}] != 1 || m[{s_x, l_y}] != 1 || m[{l_x, s_y}] != 1 || m[{l_x, l_y}] != 1 || area != (l_y - s_y)*(l_x - s_x)) return false;
+        return true;
+    }
+};
