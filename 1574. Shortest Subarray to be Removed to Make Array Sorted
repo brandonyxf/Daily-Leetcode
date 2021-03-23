@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int findLengthOfShortestSubarray(vector<int>& arr) {
+        int n = arr.size();
+        if (n <= 1) return 0;
+        
+        int min_len = 0;
+        vector<int>::iterator cur1 = arr.begin(), cur2 = arr.end() - 1, cur = arr.begin();
+        while(cur1 != arr.end() - 1 && *cur1 <= *(cur1 + 1)) cur1++;
+        if (cur1 == arr.end() - 1) return 0;
+        while(cur2 - cur1 > 0 && *cur2 >= *(cur2 - 1)) cur2--;
+        
+        min_len =  n - max(arr.end() - cur2, cur1 - arr.begin()+1);
+        int cur_len;
+        
+        while(cur <= cur1 && cur2 < arr.end()){
+            if (*cur <= *cur2){
+                min_len = min(min_len, (int)(cur2 - cur - 1));
+                cur++;
+            } else {
+                cur2++;
+            }
+   
+        }
+        return min_len;
+    }
+};
