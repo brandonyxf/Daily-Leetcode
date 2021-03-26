@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int numTriplets(vector<int>& nums1, vector<int>& nums2) {
+        int ans = 0;
+        for (long i: nums1){
+            ans += twoMulti((i*i), nums2);
+        }
+        for (long j:nums2){
+            ans += twoMulti((j*j), nums1);
+        }
+        return ans;
+        
+    }
+    
+    int twoMulti(long a, vector<int> v){
+        unordered_map<int, int> m;
+        int cnt = 0;
+        for (auto k: v){
+            if (a % k == 0){
+                cnt += m[a/k];
+            }
+            m[k]++;
+        }
+        return cnt;
+    }
+};
