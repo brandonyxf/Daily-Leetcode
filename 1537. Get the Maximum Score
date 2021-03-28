@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxSum(vector<int>& nums1, vector<int>& nums2) {
+        int n1 = nums1.size(), n2 = nums2.size();
+        int i1 = 0, i2 = 0;
+        long cur1 = 0, cur2 = 0, res = 0, mod = 1000000007;
+        while (i1 < n1 || i2 < n2){
+            if (i1 < n1 && (i2 == n2 || nums1[i1] < nums2[i2])){
+                cur1 += nums1[i1++];
+            } else if (i2 < n2 && (i1 == n1 || nums2[i2] < nums1[i1])){
+                cur2 += nums2[i2++];
+            } else {
+                res = (res + (nums1[i1] + max(cur1, cur2)));
+                cur1 = 0;
+                cur2 = 0;
+                i1++;
+                i2++;
+            }            
+        }
+        res += max(cur1, cur2);
+        return res % mod;
+    }
+};
