@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int l = 1, r = *max_element(piles.begin(), piles.end());
+        // int l = 1, r = 1000000000;
+        while(l < r){
+            int mid = l + (r - l)/2;
+            if (finished(piles, mid, h)){
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+    
+    bool finished(vector<int> piles, int speed, int h){
+        int t = 0;
+        for (int p: piles){
+            t += (p - 1)/speed + 1;
+        }
+        return t <= h;
+    }
+};
