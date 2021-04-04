@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int D) {
+        int summ = accumulate(weights.begin(), weights.end(), 0);
+        int l = max(summ/D, *max_element(weights.begin(), weights.end())), r = summ;
+        
+        while(l < r){
+            int mid = l + (r - l)/2;
+            
+            if (intime(weights, mid) <= D){
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+        
+    }
+    
+    int intime(vector<int> weights, int cap){
+        int t = 1, cur = 0;
+        
+        for (int k:weights){
+            if (cur + k >cap){
+                t++;
+                cur = 0;
+            }
+            cur += k;
+        }
+        
+        return t;
+    }
+};
