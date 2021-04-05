@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int maximizeSweetness(vector<int>& sweetness, int K) {
+        int l = 1, r = accumulate(sweetness.begin(), sweetness.end(), 0);
+        if (K == 0){
+            return r;
+        }
+        
+        while(l < r){
+            int m = l + (r - l)/2;
+            if (isGenerous(sweetness, m) >= K+1){
+                l = m + 1;
+            } else {
+                r = m;
+            }
+        }
+        return l-1;
+    }
+    
+    int isGenerous(vector<int> sweetness, int myShare){
+        int cut = 0;
+        int curr = 0;
+        for (int sweet: sweetness){
+            curr += sweet;
+            if (curr >= myShare){
+                cut++;
+                curr = 0;
+            }
+        }
+        return cut;
+    }
+};
