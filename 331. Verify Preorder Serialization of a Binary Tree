@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        int slot = 1;
+        char prev = 'a';
+        
+        for(char c: preorder){
+            if (c == ',') {
+                slot -= 1;
+                if (slot < 0) return false;
+                if (prev != '#') slot += 2;
+            }
+            prev = c;
+        }
+        if (preorder.back() == '#'){
+            slot--;
+        } else {
+            slot++;
+        }
+        return slot == 0;
+        
+    }
+    
+    
+};
