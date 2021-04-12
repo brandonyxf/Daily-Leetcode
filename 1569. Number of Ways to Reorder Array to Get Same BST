@@ -1,0 +1,43 @@
+class Solution {
+public:
+    // vector<vector<long>> dp;
+    int numOfWays(vector<int>& nums) {
+        long mod = 1e9 + 7;
+        int n = nums.size();
+
+        vector<vector<long>> dp(n+1, vector<long> (n, 1));
+        // dp.resize(n+1);
+
+        for (int i = 1; i <= n; i++){
+            // dp[i] = vector<long>(i + 1, 1);
+            for (int j = 1; j < i; j++){
+                dp[i][j] = (dp[i-1][j-1] + dp[i-1][j])%mod;
+            }
+        }
+        
+        // return (dp[left][right] - 1)%mod;
+        return ways(nums,mod, dp)%mod-1;
+        
+    }
+    long ways(vector<int>& nums, long mod, vector<vector<long>>& dp){
+        int n = nums.size();
+        if (n <= 2) return 1;
+        int mid = nums[0];
+        vector<int> left, right;
+        
+        for (int i = 1; i < n; i++){
+            if (nums[i] < mid) {
+                left.push_back(nums[i]);
+            } else {
+                right.push_back(nums[i]);
+            }
+        }
+        
+        long left_cnt = ways(left, mod, dp)%mod;
+        long right_cnt = ways(right, mod, dp)%mod;
+        
+        int l_n = left.size(), r_n = right.size();
+        return (((dp[n-1][l_n]*left_cnt)%mod)*right_cnt)%mod;
+
+    }
+};
