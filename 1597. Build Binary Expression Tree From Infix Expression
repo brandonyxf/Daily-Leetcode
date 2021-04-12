@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * struct Node {
+ *     char val;
+ *     Node *left;
+ *     Node *right;
+ *     Node() : val(' '), left(nullptr), right(nullptr) {}
+ *     Node(char x) : val(x), left(nullptr), right(nullptr) {}
+ *     Node(char x, Node *left, Node *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    Node* expTree(string s) {
+        vector<char> ops;
+        vector<Node*> nums;
+        
+        for (char ch: s){
+            if (isdigit(ch)){
+                Node* res = new Node(ch);
+                nums.push_back(res);
+            } else if (ch == '+' || ch == '-'){
+                while (!ops.empty() && (ops.back() == '+' || ops.back() == '-' || ops.back() == '*' || ops.back() == '/'))
+                    compute(ops, nums);
+                ops.push_back(ch);
+            } else if (ch == '*' || ch == '/'){
+                while (!ops.empty() && (ops.back() == '*' || ops.back() == '/')){
+                    compute(ops, nums);
+                }
+                ops.push_back(ch);
+            } else if (ch == '('){
+                ops.push_back('(');
+            } else if (ch == ')'){
+                while(ops.back() != '('){
+                    compute(ops, nums);
+                }
+                ops.pop_back();
+            }
+        }
+        while (!ops.empty()){
+            compute(ops,nums);
+        }
+        return nums.front();
+        
+    }
+    
+    void compute(vector<char>& ops, vector<Node*>& nums){
+        char op = ops.back();
+        ops.pop_back();
+        Node* right = nums.back();
+        nums.pop_back();
+        Node* left = nums.back();
+        nums.pop_back();
+        Node* res = new Node(op, left, right);
+        nums.push_back(res);
+    }
+};
