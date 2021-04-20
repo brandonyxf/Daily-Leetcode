@@ -1,0 +1,37 @@
+class NumMatrix {
+public:
+    NumMatrix(vector<vector<int>>& matrix) {
+        m = matrix;
+        for (int r = 0; r < m.size(); r++){
+            for (int c = 1; c < m[0].size(); c++){
+                m[r][c] += m[r][c-1];
+            }
+        }
+    }
+    
+    void update(int row, int col, int val) {
+        int og = m[row][col];
+        if (col != 0) og -= m[row][col-1];
+        int diff = val - og;
+        for (int c = col; c < m[0].size(); c++){
+            m[row][c] += diff;
+        }
+    }
+    
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        int summ = 0;
+        for (int r = row1; r <= row2; r++){
+            if (col1 == 0) summ += (m[r][col2]);
+            else summ += m[r][col2] - m[r][col1-1];
+        }
+        return summ;
+    }
+    vector<vector<int>> m;
+};
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix* obj = new NumMatrix(matrix);
+ * obj->update(row,col,val);
+ * int param_2 = obj->sumRegion(row1,col1,row2,col2);
+ */
