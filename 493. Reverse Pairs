@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        int n = nums.size();
+        int count = 0;
+        mergeSort(nums, count, 0, n);
+        return count;
+        
+    }
+    void mergeSort(vector<int>& nums, int& cnt, int lo, int hi){
+        if (hi - lo <= 1) return;
+        int mid = lo + (hi - lo)/2;
+        mergeSort(nums, cnt, lo, mid);
+        mergeSort(nums, cnt, mid, hi);
+        for (int i = lo, j = mid; i < mid; i++){
+            while(j < hi && nums[i] > (long)2*nums[j]){
+                j++;
+            }
+            cnt += j - mid;
+        }
+        inplace_merge(nums.begin()+lo, nums.begin()+mid, nums.begin()+hi);
+    }
+    
+
+    
+
+};
