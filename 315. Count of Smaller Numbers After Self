@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        int n = nums.size();
+        vector<pair<int, int>> v;
+        for (int i = 0; i < n; i++){
+            v.push_back({nums[i], i});
+        }
+        // vector<int> px{n+1, 0};
+        // for (int i = 0; i < n; i++){
+        //     px[i+1] = nums[i] + px[i];
+        // }
+        vector<int> count(n, 0);
+        int i = 0, j = n;
+        mergeSort(count, v, i, j);
+        return count;
+        
+        
+    }
+    void mergeSort(vector<int>& count, vector<pair<int, int>>& v, int lo, int hi){
+        if (hi - lo <= 1) return;
+        int mid;
+        mid = lo + (hi - lo)/2;
+        mergeSort(count, v, mid, hi);
+        mergeSort(count, v, lo, mid);
+        int i = lo, j = mid;
+        for (; i < mid; i++){
+            while(j < hi && v[j].first < v[i].first) j++;
+            count[v[i].second] += j - mid;
+        }
+        // lo = i;
+        // hi = j;
+        inplace_merge(v.begin()+lo, v.begin()+mid, v.begin()+hi);
+        return;
+    }
+};
