@@ -1,0 +1,35 @@
+//TLE
+
+class Solution {
+public:
+    int createSortedArray(vector<int>& instructions) {
+        vector<vector<int>> nums;
+        int MOD = 1e9 + 7;
+        int n = instructions.size(), cnt = 0;
+        for (int i = 0; i < n; i++){
+            nums.push_back({instructions[i], 0, 0});
+        }
+        mergeSort(nums, 0, n);
+        for (int i = 0; i < n; i++){
+            cnt = (cnt + min(nums[i][1], nums[i][2]))%MOD;
+        }
+        return cnt;
+    }
+    
+    void mergeSort(vector<vector<int>>& nums, int lo, int hi){
+        if (hi - lo <= 1) return;
+        int mid = lo + (hi - lo)/2;
+        // int le = 0, mo = 0;
+        mergeSort(nums, lo, mid);
+        mergeSort(nums, mid, hi);
+        for (int i = mid, j = lo, k = j; i < hi; i++){
+            while(j < mid && nums[j][0] < nums[i][0]) j++;
+            if (k < j) k = j;
+            while(k < mid && nums[k][0] == nums[i][0]) k++;
+            // cnt += min(j - l, mid - k);
+            nums[i][1] += j - lo;
+            nums[i][2] += mid - k;
+        }
+        inplace_merge(nums.begin()+lo, nums.begin()+mid, nums.begin()+hi);
+    }
+};
