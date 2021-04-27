@@ -1,0 +1,50 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int largestBSTSubtree(TreeNode* root) {
+        nodeNum = 0;
+        int large = INT_MIN, small = INT_MAX;
+        countBST(root, large, small);
+        return nodeNum;
+    }
+    
+    int countBST(TreeNode* root, int &large, int &small){
+        int leftLarge = INT_MIN, leftSmall = INT_MAX, rightLarge = INT_MIN, rightSmall = INT_MAX;
+        if (!root){
+            return 0;
+        }
+        
+        int left = countBST(root->left, leftLarge, leftSmall);
+        int right = countBST(root->right, rightLarge, rightSmall);
+        
+        if (left != -1 && right != -1){
+            if (leftLarge < root->val && rightSmall > root->val){
+                small = min(leftSmall, root->val);
+                large = max(rightLarge, root->val);
+                int count = left + right + 1;
+                if (count > nodeNum){
+                    nodeNum = count;
+                }
+                
+                return left + right + 1;
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
+private:
+    // TreeNode* ans;
+    int nodeNum;
+};
