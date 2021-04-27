@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int pathSum(vector<int>& nums) {
+        vector<vector<int>> v(5, vector<int>(8, 0));
+        // nt v[5][8] = {};
+        for (int n: nums){
+            int i = n/100, j = (n%100)/10-1, k = n%10;
+            v[i][j] = k + v[i-1][j/2];
+        }
+        
+        int summ = 0;
+        for (int i = 1; i < 5; i++){
+            for (int j = 0; j < 8; j++){
+                if (i == 4 || v[i][j] && !v[i+1][j*2] && !v[i+1][j*2+1]){
+                    summ += v[i][j];
+                } 
+            }
+        }
+        return summ;
+        
+    }
+};
