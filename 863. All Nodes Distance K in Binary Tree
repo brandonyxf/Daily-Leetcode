@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int K) {
+        unordered_map<TreeNode*, TreeNode*> m;
+        unordered_set<TreeNode*> visited;
+        vector<int> ans;
+        dfs(root, m, target);
+        queue<TreeNode*> q;
+        q.push(target);
+        int n;
+        
+        if (K==0){
+            return {target->val};
+        }
+        
+        while (!q.empty() && K >= 0){
+            n = q.size();
+            for(int i = 0; i < n; i++){
+                TreeNode* a = q.front();
+                q.pop();
+                visited.insert(a);
+                if (K == 0){
+                    ans.push_back(a->val);
+                }
+                if (m[a] && !visited.count(m[a])){
+                    q.push(m[a]);
+                }
+                if (a->left && !visited.count(a->left)){
+                    q.push(a->left);
+                }
+                if (a->right && !visited.count(a->right)){
+                    q.push(a->right);
+                }
+            }
+            K--;
+        }
+        return ans;
+        
+    }
+    
+    void dfs(TreeNode* root, unordered_map<TreeNode*, TreeNode*>& m, TreeNode* target){
+        if (!root || root->val == target->val){
+            return;
+        }
+        if (root->left != NULL){
+            m[root->left] = root;
+            dfs(root->left, m, target);
+        }
+        if (root->right != NULL){
+            m[root->right] = root;
+            dfs(root->right, m, target);
+        }
+    }
+    
+};
