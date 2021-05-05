@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool canReach(vector<int>& arr, int start) {
+        int n = arr.size();
+        queue<int> q;
+        q.push(start);
+        while(!q.empty()){
+            int a = q.front();
+            q.pop();
+            if (arr[a] == 0) return true;
+            if (arr[a] > 0){
+                if (a - arr[a] >= 0) q.push(a - arr[a]);
+                if (a + arr[a] < n) q.push(a + arr[a]);
+
+                arr[a] = -1;
+            }
+        }
+        return false;
+    }
+};
