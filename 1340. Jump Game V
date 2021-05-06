@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int dp[1000] = {0};
+    int maxJumps(vector<int>& arr, int d) {
+        // int dp[1000] = {0};
+        int res = 1;
+        for (int i = 0; i < arr.size(); i++){
+            res = max(res, dfs(arr, i, d));
+        }
+        return res;
+        
+    }
+    
+    int dfs(vector<int>& arr, int i, int d){
+        if (dp[i] != 0) return dp[i];
+        int res = 1;
+        for (int k = i+1; k <= min(i+d, (int)arr.size() - 1) && arr[k] < arr[i]; k++){
+            res = max(res, 1 + dfs(arr, k, d));
+        }
+        for (int k = i-1; k >= max(i-d, 0) && arr[k] < arr[i]; k--){
+            res = max(res, 1 + dfs(arr, k, d));
+        }
+        dp[i] = res;
+        return res;
+    }
+};
