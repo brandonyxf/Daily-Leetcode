@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<string> maxNumOfSubstrings(string s) {
+        vector<int> l(26, INT_MAX), r(26,INT_MIN);
+        vector<string> res;
+        for (int i = 0; i < s.length(); i++){
+            l[s[i] - 'a'] = min(l[s[i] - 'a'], i);
+            r[s[i] - 'a'] = i;
+        }
+        
+        int right = -1;
+        for (int i = 0; i < s.length(); i++){
+            if (i == l[s[i] - 'a']){
+                int n_right = checksubstr(i, l, r, s);
+                if (n_right != -1){
+                    if (i > right){
+                        // res.push_back(s.substr(i, 1 + n_right - i));
+                        res.push_back("");
+                    }
+                    right = n_right;
+                    res.back() = s.substr(i, right - i + 1);
+                }
+            }
+        }
+        return res;
+    }
+    
+    int checksubstr(int i, vector<int>& l, vector<int>& r, string& s){
+        int right = r[s[i] - 'a'];
+        for (int j = i; j <= right; j++){
+            if (l[s[j] - 'a'] < i){
+                return -1;
+            }
+            right = max(right, r[s[j] - 'a']);
+        }
+        return right;
+    }
+};
