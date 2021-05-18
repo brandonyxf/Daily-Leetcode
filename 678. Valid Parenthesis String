@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int cnt = 0, sp;
+        queue<int> q;
+        for (int i = 0; i < s.size(); i++){
+            if (s[i] == '(') cnt++;
+            else if (s[i] == ')') cnt--;
+            else if (s[i] == '*'){
+                q.push(i);
+                // if ()
+            }
+            
+            if (cnt < 0){
+                if (q.empty()){
+                    return false;
+                }
+                sp = q.front();
+                q.pop();
+                s[sp] = '(';
+                cnt++;
+            }
+        }
+        int n = q.size();
+        if (cnt > n) return false;
+        n = cnt;
+        cnt = 0;
+        for (int i = s.size() - 1; i >= 0; i--){
+            if (s[i] == ')') cnt++;
+            else if(s[i] == '(') cnt--;
+            else if (s[i] == '*' && n > 0){
+                n--;
+                cnt++;
+            }
+            if (cnt < 0) return false;
+        }
+        return cnt == 0? true: false;
+        
+    }
+};
