@@ -8,7 +8,6 @@ public:
             else if (s[i] == ')') cnt--;
             else if (s[i] == '*'){
                 q.push(i);
-                // if ()
             }
             
             if (cnt < 0){
