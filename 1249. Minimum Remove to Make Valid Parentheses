@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        int cnt = 0, pos = 0;
+        string newStr = "";
+        
+        for (char c: s){
+            if (c == '(') {
+                cnt++;
+                pos++;
+            } else if (c == ')') cnt--;
+            if (cnt < 0) {
+                cnt++;
+                continue;
+            }
+            newStr.push_back(c);
+        }
+        pos = pos - cnt;
+        cnt = 0;
+        s = "";
+        
+        for (char c: newStr){
+            if (c == '('){
+                if (cnt == pos){
+                    continue;
+                }
+                cnt++;
+            }
+            s.push_back(c);
+        }
+        return s;
+    }
+};
