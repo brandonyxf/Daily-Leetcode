@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<string> removeInvalidParentheses(string s) {
+        vector<string> vString{s};
+        vector<string> cur;
+        while(true){
+            cur = {};
+            for (string str: vString){
+                if (isValid(str)){
+                    cur.push_back(str);
+                }
+            }
+            if (!cur.empty()){
+                return cur;
+            }
+            unordered_set<string> myset;
+            
+            for (string str: vString){
+                for (int i = 0; i < str.length(); i++){
+                    if (str[i] == '(' || str[i] == ')')
+                    myset.insert(str.substr(0, i) + str.substr(i + 1));
+                }
+            }
+            vString = {};
+            for (string k: myset){
+                vString.push_back(k);
+            }
+        }
+        return {};
+        
+    }
+    
+    bool isValid(string& s){
+        int cnt = 0;
+         for (int i = 0; i < s.length(); i++){
+             if (s[i] == '(') cnt++;
+             else if (s[i] == ')') {
+                 cnt--;
+                 if (cnt < 0) return false;
+             }
+         }
+        return cnt == 0;
+    }
+};
