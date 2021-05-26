@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int countTriplets(vector<int>& arr) {
+        int n = arr.size();
+        if (n < 2) return 0;
+        unordered_map<int, int> freq, summ;
+        int res = 0;        
+        
+        vector<int> pref{0};
+        int cnt = 0;
+        freq[0] = 1;
+        
+        for (int i = 1; i <= n; i++){
+            pref.push_back(pref.back()^arr[i-1]);
+            res += freq[pref[i]]*(i - 1) - summ[pref[i]];
+            freq[pref[i]]++;
+            summ[pref[i]] += i;
+        }
+        
+        return res;
+    }
+};
