@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int getMaxLen(vector<int>& nums) {
+        int first_neg = -2, first_frame = -1, maxLen = 0;
+        bool neg = false;
+        
+        for (int i = 0; i < nums.size(); i++){
+            
+            if (nums[i] == 0) {
+                first_neg = -2;
+                first_frame = i;
+                neg = false;
+            }
+
+            
+            if (nums[i] < 0) neg = (neg == false);
+            if (neg == true && first_neg == -2) first_neg = i;
+            if (neg == false) maxLen = max(maxLen, i - first_frame);
+            else maxLen = max(maxLen, i - first_neg);
+        }
+        return maxLen;
+    }
+};
