@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        unordered_map<int, int> mLeft;
+        int n = nums.size(), minLen = n + 1, sumRight = x;
+        mLeft[0] = -1;
+        for (int l = 0, sum = 0; l < nums.size() && sum + nums[l] <= x; ++l)
+            mLeft.emplace(sum += nums[l], l);
+        
+        
+        for (int i = n - 1; i >= 0 && sumRight >= 0; i--) {
+            auto it = mLeft.find(sumRight);
+            if (it != mLeft.end() && i >= it->second) {
+                minLen = min(mLeft[sumRight] + n - i, minLen);
+            }
+            sumRight -= nums[i];
+        }
+        
+        return minLen == n+1? -1: minLen; 
+    }
+};
