@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& inventory, int orders) {
+        long n = inventory.size(), price = 0, div = 1e9 + 7;
+        
+        if (n == 1){
+            return ((long)inventory.front()*2 - orders + 1)*orders/2%div;
+        }
+        
+        sort(inventory.begin(), inventory.end(), [](int &a, int &b) {return a > b;});
+        long cur = inventory.front(), i = 1;
+        inventory.push_back(0);
+        while (orders > 0) {
+            while (i < n && inventory[i] >= cur) {
+                i++;
+            }
+            if (i*(cur - inventory[i]) > orders) {
+                int layer = orders/i;
+                price += i*layer*(cur*2 - layer + 1)/2 + orders%i*(cur - layer);
+                orders = 0;
+            } else {
+                price += i*(cur + (long)inventory[i] + 1)*(cur - (long)inventory[i])/2;
+                orders -= i*(cur - inventory[i]);
+                cur = inventory[i];
+            }
+            price %= div;
+        }
+        return price%div;
+        
+        
+    }
+};
