@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int minSpeedOnTime(vector<int>& dist, double hour) {
+        int l = 1, r = 1e7;
+        // float curr = 0;
+        while (l < r) {
+            int mid = l + (r - l)/2;
+            // curr = ;
+            if (time(dist, mid, hour)) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return time(dist, r, hour)? -1: r;
+    }
+    
+    bool time(vector<int>& dist, int speed, double hour){
+        int t = 0;
+        for (int i = 0; i < dist.size() - 1; i++){
+            t += (dist[i] + speed - 1)/speed;
+        }
+        // cout << (float)t + (float)dist.back()/(float)speed << endl;
+        return (double)t + (double)dist.back()/(double)speed > hour;
+        
+    }
+};
