@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int findBestValue(vector<int>& arr, int target) {
+        sort(arr.begin(), arr.end());
+        // unordered_map<int, int> m;
+        vector<int> pref = {0};
+        
+        for (int i = 0; i < arr.size(); i++) {
+            pref.push_back(arr[i] + pref.back());
+        }
+        
+        int l = 0, r = arr.back(), val = -1, minDist = INT_MAX, distance;
+        
+        while (l < r) {
+            int mid = l + (r - l)/2;
+            distance = dist(arr, pref, target, mid);
+            if (distance > 0) {
+                r = mid;
+                if (minDist > abs(distance)) {
+                    val = mid;
+                    minDist = abs(distance);
+                } else if (minDist == abs(distance)) {
+                    val = min(val, mid);
+                }
+            } else if (distance < 0) {
+                l = mid + 1;
+                if (minDist > abs(distance)) {
+                    val = mid;
+                    minDist = abs(distance);
+                } else if (minDist == abs(distance)) {
+                    val = min(val, mid);
+                }
+            } else {
+                return mid;
+            }
+        }
+        int finalDist = abs(dist(arr, pref, target, r));
+        if (finalDist == abs(distance)) {
+            return min(r, val);
+        } else if (finalDist > abs(distance)) {
+            return val;
+        } else {
+            return r;
+        }
+        
+    }
+    
+    int dist(vector<int> &arr, vector<int> &pref, int target, int val) {
+        auto it = upper_bound(arr.begin(), arr.end(), val);
+        int dis = it - arr.begin();
+        // if (it == )
+        int summ = pref[dis] + (arr.end() - it)*(val);
+        return summ - target;
+    }
+};
