@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int maxDistance(vector<int>& position, int m) {
+        sort(position.begin(), position.end());
+        int l = 1, r = (position.back() - position.front())/(m - 1);
+        int maxm = 0;
+        
+        while(l < r) {
+            int mid = l + (r - l)/2;
+            if (number(position, mid) >= m) {
+                maxm = max(maxm, mid);
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        if (number(position, r) >= m){
+            return max(maxm, r);
+        }
+        return maxm;
+    }
+    
+    int number(vector<int> & position, int d){
+        int cnt = 1, cur = position[0];
+        for (int i = 1; i < position.size(); i++){
+            if (position[i] - cur >= d) {
+                cur = position[i];
+                cnt++;
+            }
+        }
+        // cout << cnt << endl;
+        return cnt;
+    }
+};
