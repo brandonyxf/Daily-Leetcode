@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount + 1, amount + 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++){
+            for (int k: coins){
+                if (k <= i){
+                    dp[i] = min(dp[i], dp[i - k] + 1);
+                }
+            }
+        }
+        return dp[amount] == amount + 1? -1:dp[amount];
+        
+        // return checkCoin(coins, amount, 0);
+    }
+    
+//     int checkCoin(vector<int>& coins, int amount, int n){
+//         if (amount == 0){
+//             return n;
+//         } else if (amount < 0){
+//             return -1;
+//         }
+        
+//         int min_n = INT_MAX;
+//         int curr = 0;
+//         for (int k: coins){
+//             curr = checkCoin(coins, amount - k, n+1);
+//             if (curr != -1){
+//                 min_n = min(min_n, curr);
+//             }
+//         }
+//         return min_n == INT_MAX? -1: min_n;
+//     }
+    
+};
