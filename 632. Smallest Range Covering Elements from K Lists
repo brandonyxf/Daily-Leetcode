@@ -1,0 +1,37 @@
+class Solution {
+    typedef pair<vector<int>::iterator, vector<int>::iterator> pi;
+    public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        int m = nums.size(), lo = INT_MAX, hi = INT_MIN;
+        pair<int, int> rang;
+        auto compare = [](pi p1, pi p2)
+            {
+                return *(p1.first) > *(p2.first);
+            };
+        priority_queue<pi, vector<pi>, decltype(compare)> pq(compare);
+        
+        for (int i = 0; i < m; i++) {
+            pq.push({nums[i].begin(), nums[i].end()});
+            lo = min(lo, nums[i].front());
+            hi = max(hi, nums[i].front());
+        }
+        rang.first = hi;
+        rang.second = lo;
+        
+        while(true) {
+            pi a = pq.top();
+            pq.pop();
+            if ((++a.first) == a.second) break;
+            pq.push({a.first, a.second});
+            hi = max(hi, *a.first);
+            lo = *(pq.top().first);
+            
+            if (hi - lo < rang.first - rang.second || (hi - lo == rang.first - rang.second && lo < rang.second)) {
+                rang = {hi, lo};
+            }
+        }
+        return {rang.second, rang.first};
+        
+        
+    }
+};
