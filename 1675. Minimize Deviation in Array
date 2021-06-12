@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minimumDeviation(vector<int>& nums) {
+        int n = nums.size(), minn = INT_MAX, div = INT_MAX;
+        priority_queue<int> pq;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] % 2 != 0) {
+              nums[i] *= 2; 
+            } 
+            minn = min(nums[i], minn);
+            pq.push(nums[i]);
+        }
+        // cout << pq.top() << endl;
+        while(true) {
+            int a = pq.top();
+            pq.pop();
+            div = min(div, a - minn);
+            if (a%2 == 1) break;
+            minn = min(minn, a/2);
+            pq.push(a/2);
+        }
+        return div;
+        
+    }
+};
