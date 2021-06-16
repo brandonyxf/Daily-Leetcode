@@ -1,0 +1,26 @@
+class Solution {
+public:
+    
+    // use stack to store the index not value, so that when scan over the poped value(which is larger than the current), the summation will count them in.
+    int maxSumMinProduct(vector<int>& nums) {
+        long mp = 0;
+        int n = nums.size();
+        long pref[n+1];
+        stack<int> st;
+        pref[0] = 0;
+        for (int i = 0; i < n; i++) {
+            pref[i+1] = pref[i] + nums[i];
+        }
+        
+        for (int i = 0; i <= n; i++) {
+            while(!st.empty() && (i == n || nums[st.top()] > nums[i])) {
+                int cur = st.top();
+                st.pop();
+                mp = max(mp, nums[cur]*(pref[i] - pref[st.empty()? 0: st.top()+1]));
+            }
+            st.push(i);      
+                                  
+        }
+        return mp%1000000007;
+    }
+};
