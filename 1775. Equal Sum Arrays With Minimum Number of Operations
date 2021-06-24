@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums1, vector<int>& nums2) {
+        int sum1 = accumulate(nums1.begin(), nums1.end(), 0), sum2 = accumulate(nums2.begin(), nums2.end(), 0);
+        if (nums1.size() > (int)nums2.size()*6 || nums2.size() > (int)nums1.size()*6) return -1;
+        if (sum1 > sum2) {
+            swap(nums1, nums2);
+        }
+        int diff = abs(sum1 - sum2), steps = 0;
+        int cnt[6] = {0};
+        
+        for (int i = 0; i < nums1.size(); i++) {
+            cnt[6 - nums1[i]]++;
+        }
+        for (int i = 0; i < nums2.size(); i++) {
+            cnt[nums2[i] - 1]++;
+        }
+        
+        for (int i = 5; i > 0; i--) {
+            int cur = cnt[i]*i;
+            if (diff > cur) {
+                diff -= cur;
+                steps += cnt[i];
+            } else {
+                steps += diff/i + (diff%i != 0);
+                break;
+            }
+        }
+        return steps;
+        
+    }
+};
