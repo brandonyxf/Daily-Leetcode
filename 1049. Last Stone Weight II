@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int lastStoneWeightII(vector<int>& stones) {
+        int summ = accumulate(stones.begin(), stones.end(), 0), n = stones.size();
+        int half = summ / 2;
+        int left = INT_MAX;
+        
+        vector<int> dp(half+1, 0);
+        dp[0] = 1;
+        
+        for (int k: stones) {
+            for (int i = half; i >= 0; i--) {
+                if (i >= k) {
+                    dp[i] += dp[i-k];
+                }
+                
+                if (dp[i] != 0){
+                    
+                    left = min(abs(half - i), left);
+                }
+            }
+        }
+        return (summ%2)? left*2+1: left*2;
+    }
+};
