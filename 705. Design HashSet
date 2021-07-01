@@ -1,0 +1,54 @@
+class MyHashSet {
+public:
+    /** Initialize your data structure here. */
+    vector<vector<bool>> ms;
+    MyHashSet() {
+        ms = vector<vector<bool>>(1000, vector<bool>(1000, false));
+        ms[0].push_back(false);
+    }
+    
+    void add(int key) {
+        ms[key % 1000][key / 1000] = true;
+    }
+    
+    void remove(int key) {
+        ms[key % 1000][key / 1000] = false;
+    }
+    
+    /** Returns true if this set contains the specified element */
+    bool contains(int key) {
+        return ms[key % 1000][key / 1000];
+    }
+};
+
+
+// class MyHashSet {
+//     vector<bool> k;
+// public:
+//     /** Initialize your data structure here. */
+//     MyHashSet(): k(1000001,false) {
+        
+//     }
+    
+//     void add(int key) {
+//         k[key]=true;
+//     }
+    
+//     void remove(int key) {
+//         k[key]=false;
+//     }
+    
+//     /** Returns true if this set contains the specified element */
+//     bool contains(int key) {
+//         return k[key];
+//     }
+// };
+
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet* obj = new MyHashSet();
+ * obj->add(key);
+ * obj->remove(key);
+ * bool param_3 = obj->contains(key);
+ */
