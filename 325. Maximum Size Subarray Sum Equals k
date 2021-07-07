@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxSubArrayLen(vector<int>& nums, int k) {
+        unordered_map<int,int> m;
+        int curSum = 0;
+        int maxLen = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            curSum += nums[i];
+            if (curSum == k) {
+                maxLen = max(maxLen, i+1);
+            } else if (m.count(curSum-k) > 0) {
+                // return i - m[curSum-k];
+                maxLen = max(i - m[curSum - k], maxLen);
+            } 
+            if (m.count(curSum) == 0) {
+                m[curSum] = i;
+            }
+        }
+        
+        
+        return maxLen;
+    }
+};
