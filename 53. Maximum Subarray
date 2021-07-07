@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+//         int pref = 0, minn = INT_MAX, maxx = INT_MIN;
+//         for (int k: nums) {
+//             minn = min(minn, pref);
+//             pref += k;
+//             maxx = max(maxx, pref - minn);
+//         }
+        
+//         return maxx;
+        int addUp = 0, maxx = INT_MIN;
+        for (int k: nums) {
+            addUp = max(addUp + k, k);
+            maxx = max(addUp, maxx);
+        }
+        return maxx;
+    }
+};
