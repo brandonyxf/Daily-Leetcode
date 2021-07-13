@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int m[1<<20] = {};
+    bool canIWin(int n, int target) {
+        int summ = (n+1)*n/2;
+        if (summ < target) return false; 
+        if (target < n) return true;
+        if (target == summ) return n%2;
+    
+    return dfs(n, target, 0);
+        
+    }
+    
+    bool dfs(int n, int T, int k) {
+        if (m[k] != 0) return m[k] > 0;
+        if (T <= 0) return false;
+        for (int i = 0; i < n; i++) {
+            if (!(k&1<<i) && !dfs(n, T - i - 1, k|(1<<i))) {
+                m[k] = 1;
+                return true;
+            }
+        }
+        m[k] = -1;
+        return false;
+    }
+};
